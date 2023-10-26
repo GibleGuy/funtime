@@ -28,7 +28,6 @@ if timerson:
 else:
     timer = 0
     shorttimer = 0
-juror_count = 7
 
 # Given the competitions that are still eligible to compete and the status
 # It will remove the outgoing HOH (if there is one) from competing
@@ -506,8 +505,8 @@ def veto_pick(status):
     return status
 
 
-# given a player and two choices of other players
-# will return the choice that they like more in that relationship
+# Given a player and two choices of other players
+# Will return the choice that they like more in that relationship
 def comparison(player, one, two, group):
     guyone = status[group][player]["relations"][one]
     guytwo = status[group][player]["relations"][two]
@@ -598,7 +597,8 @@ def vote_announce(status):
     time.sleep(timer)
     print()
 
-
+#Announces the votes for the week
+#Has special cases for F4 and F3
 def vote_time(status):
     hoh, nom1, nom2, voter = (
         status["HOH"],
@@ -682,8 +682,13 @@ def vote_time(status):
     status = end_week(status)
     return status
 
-
+#Runs the actual season
 def game_logic(status):
+    juror_count = (len(status['PLAYERS']) - 2)%2
+    if juror_count == 1:
+        juror_count = (len(status['PLAYERS']) - 1)/2 + 1
+    else:
+        juror_count = (len(status['PLAYERS'])/2)-2
     while len(status["PLAYERS"]) > 2:
         if len(status["PLAYERS"]) >= 3:
             status = hoh_comp(status)
@@ -697,7 +702,7 @@ def game_logic(status):
     print("WE FINISHED THE GAME")
     return status
 
-
+#Ends the week by evicting the evicted houseguest and putting them in the jury
 def end_week(status):
     if len(status["PLAYERS"]) <= juror_count + 2:
         status["JURY"][status["EVICTED"]] = status["PLAYERS"][status["EVICTED"]]
@@ -800,7 +805,7 @@ playernames = [
     "Reuben",
     "Hillary Clinton",
     "JPZ",
-    "Kamila",
+    # "Kamila",
     "Misa",
     "Nicole",
     "Anuva",
