@@ -57,7 +57,7 @@ def hoh_comp(status):
     print()
     time.sleep(status["timer"])
     print(
-        f"Congratulations {yellow}{winner}{end}, you are the new {yellow}Head of Household!{end}"
+        f"Congratulations {yellow}{winner}{end}, you are the {placement_logic(status['week_num'])} {yellow}Head of Household!{end}"
     )
     status["HOH"] = winner
     return status
@@ -622,22 +622,21 @@ def vote_announce(status):
 # Announces the votes for the week
 # Has special cases for F4 and F3
 def vote_time(status):
-    hoh, nom1, nom2, voter = (
+    hoh, nom1, nom2 = (
         status["HOH"],
         status["NOM1"],
         status["NOM2"],
-        status["VOTER"],
     )
     vote_announce(status)
     votes = {nom1: 0, nom2: 0}
-    if random.randrange(0, 5) == 2 and len(status["PLAYERS"]) > 6:
+    if random.randrange(0, 99999) == 2 and len(status["PLAYERS"]) > 6:
         print(f"{bold}ITS TIME FOR AMERICA'S VOTE!")
         print(f"That's right, there's audience interaction in this game!")
         america_time = True
         while america_time:
             print(f"Please cast your vote to evict, either {nom1} or {nom2}!")
             america_vote = input()
-            if not (america_vote == nom1 or america_vote == nom2):
+            if not (america_vote == str(nom1) or america_vote == str(nom2)):
                 print(f"Let's try that again, but spell it right this time :)")
                 print()
             else:
@@ -727,7 +726,6 @@ def vote_time(status):
 # Runs the actual season
 def game_logic(status):
     status["juror_count"] = (len(status["PLAYERS"]) - 2) % 2
-    status["timers_on"] = False
     if status["timers_on"]:
         status["timer"] = 2
         status["short_timer"] = 1
@@ -836,23 +834,23 @@ playernames = [
     "Carmen",
     "Greg",
     "Kevin",
-    "Will",
-    "Andy",
-    "Hannah",
-    "Cole",
-    "Reuben",
-    "Hillary Clinton",
-    "JPZ",
-    "Kamila",
+    # "Will",
+    # "Andy",
+    # "Hannah",
+    # "Cole",
+    # "Reuben",
+    # "Hillary Clinton",
+    # "JPZ",
+    # "Kamila",
     # "Misa",
     # "Nicole",
-    # "Anuva",
-    # "Trevor",
-    # "Anuva",
-    # "Alex",
-    # "Diaz",
-    # "Nate",
-    # "Ashley",
+    "Anuva",
+    "Trevor",
+    "Anuva",
+    "Alex",
+    "Diaz",
+    "Nate",
+    "Ashley",
 ]
 
 temp_players = {}
@@ -883,7 +881,7 @@ status = {
     "VOTER": "empty",
     "WINNER": "empty",
     "juror_count": 0,
-    "timers_on": True,
+    "timers_on": False,
     "timer": 2,
     "short_timer": 1,
     "comps_left": [
@@ -916,7 +914,7 @@ status = {
 winlist = {}
 
 
-for i in range(1000):
+for i in range(1):
     temp_players = {}
     for x in playernames:
         temp_players[x] = {"relations": {}, "compability": {}}
@@ -931,8 +929,5 @@ for i in range(1000):
         winlist[temp["WINNER"]] = winlist[temp["WINNER"]] + 1
     else:
         winlist[temp["WINNER"]] = 1
-print(winlist)
 
-reset_status(status)
-game_logic(status)
 
